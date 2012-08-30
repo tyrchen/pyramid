@@ -13,26 +13,17 @@ import random
 api = API()
 
 app_name = 'cayman'
-collection_name = 'event'
+collection_name = 'create_clip'
 db_info = {
   'app_name': app_name,
 }
 
 anonymous_simida = {'uid': '', 'cookie': 'kimgee'}
 simida = {'uid': 'simida', 'cookie': 'kimgee'}
+user_list = ['chiyuan', 'tchen', 'wxttt', 'simida', 'brain', 'du', 'hugh']
 
-event1 = {'collection_name': collection_name, 'clip': 'clip1', 'board': 'board1', 'origin': '1',
-          'text': 'I love zixiao', 'datetime': py_time.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-time.sleep(0.1)
-
-event2 = {'collection_name': collection_name, 'clip': 'clip2', 'board': 'board2', 'origin': '2',
-          'text': 'Zixiao, do you love me?', 'datetime': py_time.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-time.sleep(0.1)
-
-event3 = {'collection_name': collection_name, 'clip': 'clip3', 'board': 'board3', 'origin': '2',
-          'text': 'Zixiao, We are in love'}
+clip_list = ['tukeq', 'mafengwo', 'qiongyou', 'guluyu', 'ziyou', 'sina']
+board_list = ['black', 'white', 'green', 'yellow', 'red', 'blue']
 
 delta_day = datetime.timedelta(days=1)
 delta_hour = datetime.timedelta(hours=1)
@@ -45,6 +36,17 @@ tomorrow = now + delta_day
 two_days_later = now + delta_day*2
 half_a_day_before = now - delta_hour*12
 
+def random_user():
+  uid = random.choice(user_list)
+  cookie = '%s_cookie' %uid
+  return {
+    'uid': uid,
+    'cookie': cookie
+  }
+
+def random_choice(list):
+  return random.choice(list)
+
 def random_hour():
   return int(random.uniform(0, 24))
 
@@ -55,30 +57,38 @@ def random_datetime():
   now = py_time.now()
   delta = random_day()
   date = now - timedelta(days=delta)
-  return py_time(year=date.year, month=date.month, day=date.day, hour=random_hour())
+  return py_time(year=date.year, month=date.month,
+                 day=date.day, hour=random_hour()).strftime('%Y-%m-%d %H:%M:%S')
 
 def random_event():
-  return {
+  clip = random_choice(clip_list)
+  board = random_choice(board_list)
+  user_info = random_user()
+  uid = user_info['uid']
+  text = '%s在%s上创建了%s' %(uid, board, clip)
+
+  return user_info, {
     'collection_name': collection_name,
-    'clip': random.choice(['clip1', 'clip2', 'clip3']),
-    'board': random.choice(['board1', 'board2', 'board3']),
+    'clip': clip,
+    'board': board,
     'origin': random.choice(['1', '2']),
-    'datetime':two_days_later.strftime('%Y-%m-%d %H:%M:%S'),
-    'text': str(int(random.random()*10000)),
+    'datetime': random_datetime(),
+    'text': text,
   }
 
 def base_test():
-  api.post(app_name, simida, [random_event()])
+  user_info, event = random_event()
+  api.post(app_name, user_info, [event])
 
 def query_test():
-  from_date = yesterday
-  to_date = now
+  from_date = two_days_ago
+  to_date = two_days_later  
   query = {
     'collection_name': collection_name,
     'from_datetime': from_date.strftime('%Y-%m-%d %H:%M:%S'),
     'to_datetime': to_date.strftime('%Y-%m-%d %H:%M:%S'),
   }
-  fields = [{'board': 'board1', 'clip': 'clip2'},]
+  fields = [{'uid': 'chiyuan', 'board': 'blue'},]
   content = api.query(app_name, query, fields)
   print(content)
 
