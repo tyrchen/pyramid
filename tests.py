@@ -68,7 +68,7 @@ def random_event():
   text = '%s在%s上创建了%s' %(uid, board, clip)
 
   return user_info, {
-    'collection_name': collection_name,
+    'event_name': collection_name,
     'clip': clip,
     'board': board,
     'origin': random.choice(['1', '2']),
@@ -84,7 +84,7 @@ def query_test():
   from_date = two_days_ago
   to_date = two_days_later  
   query = {
-    'collection_name': collection_name,
+    'event_name': collection_name,
     'from_datetime': from_date.strftime('%Y-%m-%d %H:%M:%S'),
     'to_datetime': to_date.strftime('%Y-%m-%d %H:%M:%S'),
   }
