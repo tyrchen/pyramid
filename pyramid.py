@@ -6,7 +6,7 @@ import json
 import md5
 import requests
 
-__version__ = 1.1
+__version__ = 1.2
 
 HOST_DEFALUT = 'http://127.0.0.1:8000'
 PYRAMID_SETTINGS = {'EASTER_HOST': HOST_DEFALUT}
@@ -32,6 +32,13 @@ class API():
     self.host = HOST
 
   def post(self, app_name, user_info, events):
+    """
+      Post event data to log server.
+      :Params app_name str: The register app name.
+      :Params user_info dict:  It contains uid & cookie. Like {'uid': 'ccy', 'cookie': 'abcdef'}
+      :Params events list: It contains event info, likes event_name, origin, text, datetime etc
+      @return status_code: Like 200, 400, 403, 404, same as Http response status.
+    """
     json_data = {
       'app_name': app_name,
       'user_info': user_info,
@@ -50,6 +57,13 @@ class API():
     return r.status_code
 
   def query(self, app_name, query, fields=[]):
+    """
+      Get statistics data from log server.
+      :Params app_name str: The register app name.
+      :Params query dict: Query dict, which contains collection_name, from_datetime, to_datetime.
+      :Params fields list: The fields wanted, return [] if fields is None.
+      @return json_str with full info, use json.loads to decode them.
+    """
     info = {
       'app_name': app_name,
       'query': json.dumps(query),
@@ -59,6 +73,13 @@ class API():
     return r.content
 
   def events(self, uid, from_datetime, to_datetime):
+    """
+      Get user events falls from log server.
+      :Params uid, which user's events. if uid = None, return everyone.
+      :from_datetime str: From which time.
+      :to_datetime str: To which time
+      @return json_str with full info, use json.loads to decode them
+    """
     info = {
       'uid': uid,
       'from_datetime': from_datetime,
