@@ -6,15 +6,15 @@ import json
 import md5
 import requests
 
-__version__ = 1.0
+__version__ = 1.1
 
 HOST_DEFALUT = 'http://127.0.0.1:8000'
 PYRAMID_SETTINGS = {'EASTER_HOST': HOST_DEFALUT}
 
 try:
   from django.conf import settings
-  HOST = settings.get('EASTER_HOST', HOST_DEFALUT)
-except:
+  HOST = getattr(settings, 'EASTER_HOST', HOST_DEFALUT)
+except ImportError:
   settings = PYRAMID_SETTINGS
   HOST = HOST_DEFALUT
 
