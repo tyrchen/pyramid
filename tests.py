@@ -51,7 +51,7 @@ def random_hour():
   return int(random.uniform(0, 24))
 
 def random_day():
-  return random.choice(range(6))
+  return random.choice(range(2))
 
 def random_datetime():
   now = py_time.now()
@@ -88,7 +88,7 @@ def query_test():
     'from_datetime': from_date.strftime('%Y-%m-%d %H:%M:%S'),
     'to_datetime': to_date.strftime('%Y-%m-%d %H:%M:%S'),
   }
-  fields = [{'uid': 'chiyuan', 'board': 'blue'},]
+  fields = [{'uid': 'chiyuan', 'clip': 'sina'},]
   content = api.query(app_name, query, fields)
   print(content)
 

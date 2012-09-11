@@ -3,12 +3,12 @@
 
 from __future__ import division, unicode_literals, print_function
 import json
-import md5
+import hashlib
 import requests
 
-__version__ = 1.2
+__version__ = 1.3
 
-HOST_DEFALUT = 'http://127.0.0.1:8000'
+HOST_DEFALUT = 'http://127.0.0.1:8009'
 PYRAMID_SETTINGS = {'EASTER_HOST': HOST_DEFALUT}
 
 try:
@@ -22,8 +22,20 @@ POST_URL = '%s/api/v1/event/' %HOST
 QUERY_URL = POST_URL
 EVENTS_URL = '%s/api/v1/user/' %HOST
 
+def sorted_json(aim_item):
+  if isinstance(aim_item, (basestring, int, long, float, bool)):
+    return str(aim_item)
+  elif isinstance(aim_item, (set, list, tuple)):
+    return '&'.join([sorted_json(item) for item in aim_item])
+
+  result = ''
+  for key in sorted(aim_item.iterkeys()):
+    result = result + '&' + json.dumps({key: sorted_json(aim_item[key])})
+  return result
+
 def md5_sig(json_data):
-  m = md5.new(json.dumps(json_data))
+  m = hashlib.md5()
+  m .update(sorted_json(json_data))
   sig = m.hexdigest()
   return sig
 
