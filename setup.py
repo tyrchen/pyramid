@@ -16,7 +16,7 @@ METADATA = dict(
     long_description=open('README.md').read(),
     url='http://github.com/tyrchen/pyramid',
     keywords='pyramid client',
-    install_requires=[],
+    install_requires=['requests'],
     include_package_data=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
