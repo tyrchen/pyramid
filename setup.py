@@ -5,7 +5,6 @@
 from __future__ import division, unicode_literals, print_function
 
 from setuptools import setup, find_packages
-import pyramid
 
 METADATA = dict(
     name='pyramid',
