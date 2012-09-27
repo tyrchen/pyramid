@@ -6,9 +6,11 @@ from __future__ import division, unicode_literals, print_function
 
 from setuptools import setup, find_packages
 
+__version__ = 1.3
+
 METADATA = dict(
     name='pyramid',
-    version=pyramid.__version__,
+    version=__version__,
     author='chen chiyuan',
     author_email='chenchiyuan03@.com',
     description='easter python client',

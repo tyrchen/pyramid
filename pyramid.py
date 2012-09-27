@@ -6,8 +6,6 @@ import json
 import hashlib
 import requests
 
-__version__ = 1.3
-
 HOST_DEFALUT = 'http://127.0.0.1:8009'
 PYRAMID_SETTINGS = {'EASTER_HOST': HOST_DEFALUT}
 
