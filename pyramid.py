@@ -5,21 +5,11 @@ from __future__ import division, unicode_literals, print_function
 import json
 import hashlib
 import requests
-import logging
 
-__version__ = 1.5
+__version__ = 1.6
 
 HOST_DEFALUT = 'http://127.0.0.1:8009'
 PYRAMID_SETTINGS = {'EASTER_HOST': HOST_DEFALUT}
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-file_handler = logging.FileHandler('log/pyramid.log')
-file_handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
 
 try:
   from django.conf import settings
@@ -76,10 +66,7 @@ class API():
 
     headers = {'content-type': 'application/json'}
 
-    logger.info("Url: %s, app: %s, user_id %s " %
-                (POST_URL, app_name, user_info.get('uid', '')))
     r = requests.post(url=POST_URL, data=json.dumps(info), headers=headers)
-    logger.info("Status_code %r" % r.status_code)
     return r.status_code
 
   def query(self, app_name, query, fields=[]):
