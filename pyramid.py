@@ -7,12 +7,19 @@ import hashlib
 import requests
 import logging
 
-__version__ = 1.4
+__version__ = 1.5
 
 HOST_DEFALUT = 'http://127.0.0.1:8009'
 PYRAMID_SETTINGS = {'EASTER_HOST': HOST_DEFALUT}
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+file_handler = logging.FileHandler('log/pyramid.log')
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 try:
   from django.conf import settings
